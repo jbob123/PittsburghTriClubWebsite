@@ -586,3 +586,223 @@ th { font-family: var(--font-head); font-size: 0.8rem; text-transform: uppercase
 .mt-0 { margin-top: 0; }
 .stack { display: flex; flex-direction: column; gap: 10px; }
 .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+/* ==========================================================================
+   Updates — scrolling header, photos, race list, coaches, sponsors
+   ========================================================================== */
+
+/* `overflow-x: hidden` on html/body breaks position: sticky on mobile, so the
+   header scrolled away and never came back. `clip` hides overflow without
+   creating a scroll container. */
+html, body { overflow-x: clip; }
+/* The header is injected into this wrapper; sticky only works if the wrapper
+   doesn't box it in. */
+#site-header { display: contents; }
+[id] { scroll-margin-top: 90px; }
+
+/* Mobile/tablet: header slides away on scroll down, returns on scroll up. */
+.site-header { transition: transform 0.25s ease; }
+@media (max-width: 1240px) {
+  .site-header.header-hidden { transform: translateY(-100%); }
+}
+
+/* ---------- Hero photo ---------- */
+.hero-art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-art .tag { position: relative; z-index: 1; }
+.hero-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(18,24,31,0.65), transparent 45%);
+}
+
+/* ---------- Photo grid ---------- */
+.photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.photo-grid figure { margin: 0; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); background: var(--bg-alt); }
+.photo-grid img { width: 100%; height: 100%; aspect-ratio: 4/3; object-fit: cover; transition: transform 0.3s ease; }
+.photo-grid figure:hover img { transform: scale(1.04); }
+@media (max-width: 620px) { .photo-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Footer social ---------- */
+.footer-social { flex-wrap: wrap; }
+
+/* ---------- Race list ---------- */
+.race-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+.race-filter {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+.race-filter:hover { border-color: var(--river-blue); }
+.race-filter.active { background: var(--pgh-black); border-color: var(--pgh-black); color: #fff; }
+
+.race-month { margin-bottom: 34px; }
+.race-month h2 {
+  font-size: 1.35rem;
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+  border-bottom: 2px solid var(--pgh-gold);
+}
+.race-row {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.race-date {
+  font-family: var(--font-head);
+  font-weight: 700;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 4px;
+  align-self: start;
+  line-height: 1.1;
+}
+.race-date small { display: block; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.race-date span { font-size: 1.15rem; color: var(--pgh-black); word-break: keep-all; }
+.race-list { display: flex; flex-direction: column; gap: 12px; }
+.race-item { display: flex; flex-direction: column; gap: 2px; }
+.race-name { font-weight: 600; color: var(--pgh-black); }
+.race-place { font-size: 0.88rem; color: var(--text-muted); }
+.race-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.race-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(27,111,168,0.12);
+  color: var(--river-blue-dark);
+}
+.race-tag.olympic { background: rgba(255,102,71,0.14); color: var(--coral-dark); }
+.race-tag.half { background: rgba(255,184,28,0.25); color: #7a5600; }
+.race-tag.ironman { background: var(--pgh-black); color: #fff; }
+.race-tag.other { background: var(--bg-alt); color: var(--text-muted); }
+.race-status { text-align: center; color: var(--text-muted); padding: 40px 0; }
+@media (max-width: 480px) {
+  .race-row { grid-template-columns: 58px 1fr; gap: 12px; }
+}
+
+/* ---------- Coaching ---------- */
+.coach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+@media (max-width: 900px) { .coach-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .coach-grid { grid-template-columns: 1fr; } }
+.coach-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.coach-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); color: var(--text); }
+.coach-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; object-position: center 20%; }
+.coach-card-body { padding: 18px 22px 22px; }
+.coach-card-body .org { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--coral-dark); }
+.coach-card-body h3 { margin: 4px 0 8px; color: var(--river-blue-dark); }
+.coach-card-body .go { font-weight: 600; font-size: 0.9rem; color: var(--river-blue); }
+
+.profile-head { display: grid; grid-template-columns: 260px 1fr; gap: 40px; align-items: center; }
+.profile-head img { width: 260px; height: 260px; border-radius: 50%; object-fit: cover; object-position: center 20%; border: 6px solid var(--pgh-gold); background: #fff; }
+.profile-head h1 { color: #fff; margin-bottom: 6px; }
+.profile-head .org { color: var(--pgh-gold); font-family: var(--font-head); font-weight: 600; font-size: 1.15rem; margin: 0 0 18px; }
+@media (max-width: 700px) {
+  .profile-head { grid-template-columns: 1fr; text-align: center; justify-items: center; gap: 22px; }
+  .profile-head img { width: 200px; height: 200px; }
+}
+.profile-links { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 700px) { .profile-links { justify-content: center; } }
+.profile-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+.profile-links a:hover { background: var(--pgh-gold); color: var(--pgh-black); }
+.profile-links svg { width: 17px; height: 17px; fill: currentColor; flex-shrink: 0; }
+
+.status-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 18px; }
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #fff;
+}
+.status-pill .check { color: #7fe07f; font-size: 1.1rem; line-height: 1; }
+
+.profile-section { margin-bottom: 36px; }
+.profile-section h2 { font-size: 1.4rem; padding-bottom: 8px; border-bottom: 2px solid var(--pgh-gold); display: inline-block; }
+.profile-section p, .profile-section ul { max-width: 75ch; }
+.profile-section img.inline-photo { max-width: 340px; width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border); margin-top: 8px; }
+
+/* ---------- Sponsors ---------- */
+.sponsor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+.sponsor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  text-align: center;
+  padding: 24px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.sponsor-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.sponsor-card .logo-wrap { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; min-height: 96px; }
+.sponsor-card img { max-height: 90px; max-width: 100%; width: auto; object-fit: contain; }
+.sponsor-card a.name { font-family: var(--font-head); font-weight: 600; font-size: 1.02rem; color: var(--river-blue-dark); }
+.sponsor-card a.name:hover { text-decoration: underline; }
+.link-list { list-style: none; margin: 0; padding: 0; }
+.link-list li { padding: 8px 0; border-bottom: 1px solid var(--border); }
+.link-list li:last-child { border-bottom: 0; }
+
+/* ---------- By-laws ---------- */
+.bylaws h2 { font-size: 1.25rem; text-align: center; margin: 40px 0 4px; letter-spacing: 0.04em; }
+.bylaws h3.sub { text-align: center; font-size: 1rem; letter-spacing: 0.06em; margin-bottom: 20px; }
+.bylaws p { text-align: left; }
+.bylaws .indent { margin-left: 28px; }
+@media (max-width:620px){.bylaws{padding:26px 20px !important}}
+
+@media (max-width: 560px) {
+  .coach-card { flex-direction: row; align-items: stretch; }
+  .coach-card img { width: 110px; height: auto; min-height: 110px; aspect-ratio: auto; flex-shrink: 0; }
+  .coach-card-body { display: flex; flex-direction: column; justify-content: center; }
+  .coach-card-body { padding: 12px 16px; }
+  .coach-card-body h3 { font-size: 1.1rem; }
+}
+@media (max-width:700px){.status-row{justify-content:center}}
+.sponsor-card .logo-wrap.dark { background: var(--pgh-black); border-radius: var(--radius-sm); padding: 20px; }
+.sponsor-card .logo-wrap.dark img { max-height: 40px; }

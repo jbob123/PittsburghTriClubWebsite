@@ -9,6 +9,7 @@
       headerSlot.innerHTML = await res.text();
       setActiveNav();
       wireMobileNav();
+      wireHeaderScroll();
     }
     if (footerSlot) {
       const res = await fetch("/partials/footer.html");
@@ -44,6 +45,43 @@
         }
       });
     });
+  }
+
+  // On mobile/tablet the header slides away while scrolling down and comes
+  // back as soon as the user scrolls up (or when the menu is open).
+  function wireHeaderScroll() {
+    const header = document.querySelector(".site-header");
+    const nav = document.getElementById("mainNav");
+    if (!header) return;
+    const mobile = window.matchMedia("(max-width: 1240px)");
+    const THRESHOLD = 6;
+    let lastY = Math.max(window.scrollY, 0);
+    let ticking = false;
+
+    function update() {
+      ticking = false;
+      const y = Math.max(window.scrollY, 0);
+      const delta = y - lastY;
+      const menuOpen = nav && nav.classList.contains("open");
+
+      if (!mobile.matches || menuOpen || y <= header.offsetHeight) {
+        header.classList.remove("header-hidden");
+        lastY = y;
+      } else if (delta > THRESHOLD) {
+        header.classList.add("header-hidden");
+        lastY = y;
+      } else if (delta < -THRESHOLD) {
+        header.classList.remove("header-hidden");
+        lastY = y;
+      }
+    }
+
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }, { passive: true });
   }
 
   function wireAccordions() {

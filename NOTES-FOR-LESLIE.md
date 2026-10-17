@@ -42,20 +42,21 @@ Organized so you can just read this top to bottom with her.
   current board members reportedly don't have access to that inbox anymore.
   I'd swap this for the general club email or the correct current contact —
   need Leslie to confirm which.
-- **Club By-Laws** — I reconstructed a plain-English summary of the bylaws
-  from what the old site exposed as text, but for a governing document the
-  *actual* signed bylaws PDF should be the source of truth. Need that file
-  re-uploaded rather than relying on my summary — flagged directly on
-  [by-laws.html](by-laws.html).
+- **Club By-Laws** — [by-laws.html](by-laws.html) now carries the exact text
+  of the bylaws from the old site (word for word, typos and blank fields
+  such as the number of directors included). It's still worth swapping in the
+  signed PDF if one exists, since the board-size blanks were blank on the old
+  site too.
 - **Sponsorship Guidelines PDF** — same situation: the old "Become a
   Sponsor" page linked a downloadable 2017 guidelines PDF with sponsor tier
   details that didn't come through as text. Need that file to re-upload —
   flagged on [sponsors.html](sponsors.html).
-- **Coaching Resources bios** — old site had a short list of coach names
-  (Crew Racing and Rehab, FLYT Performance, Get Fit Families, Ken Presutti,
-  Deb Sagan, Hill Pursuit) each linking to their own bio sub-page. I kept the
-  names/links but didn't migrate individual bios — worth doing if those
-  pages get real traffic.
+- **Coaching Resources** — each coach now has a profile page (photo, services,
+  experience, certifications, philosophy, PTC incentives) copied from the old
+  site; FLYT Performance links out to flytperformance.com. Next step is
+  adding links and extra detail to each profile. Note the Crew Racing and
+  Rehab website (crewracing.org) returned a 404 when checked (same as the old
+  site) — worth asking Caitlin for the right address.
 
 ### Sharing / privacy
 - The **Google Calendar** and **Race List spreadsheet** are now embedded
@@ -75,11 +76,12 @@ Organized so you can just read this top to bottom with her.
     "Settings → Integrate calendar → Embed code" panel gives an iframe
     snippet with proper sizing/config options (default view, color, showing
     tabs, etc.) — swap that in.
-  - **Race List spreadsheet** ([races.html](races.html)) — currently using
-    `/preview` on the sheet URL, which happens to render but isn't the
-    "supported" embed path. Use **File → Share → Publish to web** in Google
-    Sheets to get the real embed HTML, which is more stable and lets you
-    control which sheet/range shows.
+  - **Race List** ([races.html](races.html)) — reads the "Race List & Links"
+    tab of the Google Sheet live (via `assets/js/races.js`) and shows it as a
+    mobile-friendly list. The sheet must stay shared as "anyone with the
+    link can view" and keep its column layout (Month, Day, Sprint, Olympic,
+    Half Iron, Ironman, Other). Hyperlinks inside sheet cells don't come
+    through to the page.
   - **Square Shop** — currently just links out to
     [shopptc.square.site](https://shopptc.square.site/) in a new tab. Square
     has embeddable site/store widgets — worth checking whether embedding
@@ -119,35 +121,31 @@ anything. This version splits things two ways:
 ## 4. Site structure
 
 ```
-index.html         Home (mission, get involved, testimonials, follow us)
+index.html         Home (mission, photos, get involved, follow us)
 membership.html     Become a Member, pricing, elections
 races.html          Race list (live Google Sheet embed)
 events.html          Events calendar (live Google Calendar embed)
-resources.html       Beginners / open water / swimming / running / cycling / coaching / FAQ
+resources.html       Beginners / open water / swimming / running / cycling / FAQ
+coaching-resources.html  Coach directory; one profile page per coach (crew-racing-and-rehab, joella-baker, ken-presutti, deb-sagan, hayden-gerhart)
 leadership.html      Board bios
 sponsors.html        Our sponsors + become a sponsor
-shop.html            Club shop overview, links out to Square store
 by-laws.html         Club bylaws
 contact.html         Contact form + club email/socials
 404.html             Branded "page not found" (most hosts auto-serve this on broken links)
 robots.txt / sitemap.xml   Basic SEO hygiene
 assets/img/ptc-logo.jpg   Real club logo — used as favicon + header/footer mark (see note below on resolution)
 assets/css/style.css  Design system (all colors, fonts, spacing in one file)
-assets/js/main.js     Shared header/footer injection, mobile nav, accordions
+assets/js/main.js     Shared header/footer injection, mobile nav, hide-on-scroll header, accordions
+assets/js/races.js    Race list loader/renderer
 partials/header.html  Shared nav — edit once, updates on every page
 partials/footer.html  Shared footer — edit once, updates on every page
 ```
 
 ### What got added for the client demo pass
-- **Shop page** — nav/footer "Shop" now points to an actual `/shop.html`
-  instead of jumping straight to Square, so every nav item lands somewhere
-  on-brand first.
+- **Shop** — there is no separate shop page; every "Shop" button goes straight to shopptc.square.site.
 - **FAQ accordion** — added to the bottom of Resources, answering the most
   obvious new-member questions (cost, gear, nerves about open water/group
   rides, how to add a race).
-- **Testimonials** — homepage now has a "What members say" section using
-  real quotes pulled from the leadership bios (Joan Wolfe, Ed Schmiech) and
-  the beginners page — no invented content.
 - **Real logo added** — the actual club crest (Pittsburgh skyline + gear +
   swim/bike/run figures) is now the favicon and the header/footer mark.
   Only source we have is a 288×288px export (looks like an Instagram
