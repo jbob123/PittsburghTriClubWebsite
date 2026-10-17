@@ -164,8 +164,8 @@ a:hover { color: var(--river-blue-dark); }
 }
 .brand:hover { color: var(--pgh-black); }
 .brand-mark {
-  width: 54px;
-  height: 54px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
   background: #fff;
   border: 1px solid var(--border);
@@ -251,7 +251,7 @@ a:hover { color: var(--river-blue-dark); }
 @media (max-width: 1240px) {
   .main-nav {
     position: fixed;
-    inset: 70px 0 0 0;
+    inset: 76px 0 0 0;
     background: var(--surface);
     flex-direction: column;
     align-items: stretch;
@@ -285,7 +285,7 @@ a:hover { color: var(--river-blue-dark); }
   .nav-wrap { padding: 12px 16px; }
   .brand-text-full { display: none; }
   .brand-text-short { display: inline; }
-  .brand-mark { width: 42px; height: 42px; font-size: 0.8rem; }
+  .brand-mark { width: 48px; height: 48px; font-size: 0.8rem; }
   .nav-cta { gap: 6px; }
   .nav-cta .btn-sm { padding: 7px 12px; font-size: 0.78rem; }
   .nav-toggle { padding: 4px; }
@@ -607,27 +607,29 @@ html, body { overflow-x: clip; }
 }
 
 /* ---------- Hero photo ---------- */
-.hero-art img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 .hero-art .tag { position: relative; z-index: 1; }
-.hero-art::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(18,24,31,0.65), transparent 45%);
-}
 
 /* ---------- Photo grid ---------- */
 .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.photo-grid figure { margin: 0; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); background: var(--bg-alt); }
+.photo-grid.two { grid-template-columns: repeat(2, 1fr); }
+.photo-grid figure { position: relative; margin: 0; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); background: var(--bg-alt); }
 .photo-grid img { width: 100%; height: 100%; aspect-ratio: 4/3; object-fit: cover; transition: transform 0.3s ease; }
 .photo-grid figure:hover img { transform: scale(1.04); }
-@media (max-width: 620px) { .photo-grid { grid-template-columns: 1fr; } }
+.photo-grid figcaption {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 28px 14px 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(to top, rgba(18,24,31,0.78), transparent);
+  pointer-events: none;
+}
+.photo-grid img.top { object-position: center 25%; }
+@media (max-width: 620px) {
+  .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .photo-grid figcaption { font-size: 0.7rem; padding: 20px 8px 6px; }
+}
 
 /* ---------- Footer social ---------- */
 .footer-social { flex-wrap: wrap; }
@@ -806,3 +808,21 @@ html, body { overflow-x: clip; }
 @media (max-width:700px){.status-row{justify-content:center}}
 .sponsor-card .logo-wrap.dark { background: var(--pgh-black); border-radius: var(--radius-sm); padding: 20px; }
 .sponsor-card .logo-wrap.dark img { max-height: 40px; }
+
+/* Hero: club logo */
+.hero-art { align-items: center; justify-content: center; }
+.hero-art .hero-logo {
+  width: min(78%, 320px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: #fff;
+  object-fit: cover;
+  box-shadow: var(--shadow-lg);
+}
+.hero-art .tag { display: none; }
+
+/* Photos inside accordions / content */
+.content-photos { display: grid; gap: 12px; margin: 16px 0 4px; grid-template-columns: repeat(2, 1fr); }
+.content-photos img { width: 100%; height: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+@media (max-width: 560px) { .content-photos { grid-template-columns: 1fr; } }
+@media (max-width: 860px) { .hero-art .hero-logo { width: auto; height: 84%; } }
